@@ -1,0 +1,28 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+.env
+
+.vscode/
+.ruff_cache/
+.mypy_cache/
+.idea/
+*.sqlite*
+*.db
+.coverage*
+pytestdebug.log
+.pytest_cache/
+config.toml
+prod_config.toml
+.DS_Store
+logs
+.secrets
+.dockerignore
+.backups

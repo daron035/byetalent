@@ -1,0 +1,63 @@
+services:
+  api:
+    profiles: ["all"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - ./config:/app/config:ro
+    networks:
+      - hitalent.postgres.network
+      - hitalent.rabbitmq.network
+    environment:
+      - CONFIG_PATH=${CONFIG_PATH:-./config/prod_config.template.toml}
+    healthcheck:
+      disable: true
+      test: ["CMD-SHELL", "curl -fsSL http://localhost:8000/healthcheck/"]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+      start_period: 10s
+
+  postgres:
+    profiles: ["all", "postgres"]
+    image: postgres:18-alpine3.22
+    restart: unless-stopped
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    networks:
+      - hitalent.postgres.network
+    environment:
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      POSTGRES_USER: ${POSTGRES_USER:-$USER}
+      POSTGRES_DB: ${POSTGRES_DB:-$USER}
+    volumes:
+      - hitalent.postgres:/var/lib/postgresql:rw
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 60s
+      retries: 5
+      start_period: 10s
+
+  pgadmin:
+    profiles: ["all"]
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    networks:
+      - hitalent.postgres.network
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+
+volumes:
+  hitalent.postgres:
+    name: hitalent.postgres
+
+networks:
+  hitalent.postgres.network:
+    name: hitalent.postgres.network
