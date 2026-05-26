@@ -7,7 +7,9 @@ from fastapi import FastAPI
 from starlette import status
 from starlette.requests import Request
 
+from src.application.department.exceptions import DepartmentNotFoundError
 from src.domain.common.exceptions import AppError
+from src.domain.employee.exceptions import EmployeePositionEmptyError, EmployeeValidationError
 from src.presentation.api.controllers.responses import ErrorResponse
 from src.presentation.api.controllers.responses.base import ErrorData
 from src.presentation.api.controllers.responses.orjson import ORJSONResponse
@@ -18,6 +20,9 @@ logger = logging.getLogger(__name__)
 
 def setup_exception_handlers(app: FastAPI) -> None:
     app.add_exception_handler(AppError, error_handler(500))
+    app.add_exception_handler(EmployeePositionEmptyError, error_handler(500))
+    app.add_exception_handler(EmployeeValidationError, error_handler(500))
+    app.add_exception_handler(DepartmentNotFoundError, error_handler(404))
     app.add_exception_handler(Exception, unknown_exception_handler)
 
 

@@ -19,7 +19,7 @@ def init_api(
     logger.debug("Initialize API")
     app = FastAPI(
         debug=debug,
-        title="Camirix Integrations",
+        title="hitalent",
         version="1.0.0",
         default_response_class=ORJSONResponse,
     )

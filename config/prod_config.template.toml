@@ -1,0 +1,17 @@
+[api]
+host = "0.0.0.0"
+port = 8000
+debug = true
+
+[db]
+host = "postgres"
+port = 5432
+database = "hitalent"
+user = "admin"
+password = "admin"
+echo = true
+
+[logging]
+level = "DEBUG"
+render_json_logs = false
+#path = "./logs/logs.log"

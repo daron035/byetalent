@@ -52,3 +52,7 @@ lint = [
     "pylint-per-file-ignores>=3.2.1",
     "ruff>=0.15.13",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
